@@ -23,11 +23,11 @@ let testBoolean: boolean;
 testBoolean = false;
 
 //// MULTIPLE TYPES (UNION TYPES)
-let testStringOrNumber: string | number;
+let testStringOrNumber: string | number | object;
 
 testStringOrNumber = 10;
 testStringOrNumber = "10";
-// testStringOrNumber = []
+testStringOrNumber = [];
 
 //// ARRAYS
 let names = ["john", "jane", "tom"];
@@ -109,6 +109,9 @@ let testAnyArray: any[];
 
 testAnyArray = [1, "two", false, []];
 
+let testObjArray: object[];
+testObjArray = [{ id: 1 }, [], { isAdmin: false }, []];
+
 //// FUNCTIONS
 let sayHi = () => {
   console.log("Hi, welcome");
@@ -153,12 +156,20 @@ let betterFunc = (user: UserType) => {
   console.log(user.username);
 };
 
+let myFunc1 = (user: UserType) => {
+  console.log(user.username);
+};
+
+type myFunc1 = (a: UserType) => void;
+
 //FUNCTION SIGNATURES
 type myFunc = (a: number, b: string) => void;
 
 let write: myFunc = (num, str) => {
   console.log(num + " times " + str);
 };
+
+write(2, "hooray");
 
 type UserType2 = {
   username: string;
@@ -230,6 +241,23 @@ const testMe: IPostBetter<string> = {
   extra: ["str", "str2"],
 };
 
+const testMe1: IPostBetter<IAuthor> = {
+  id: 1,
+  title: "post title",
+  desc: "post desc",
+  extra: [
+    { id: 1, username: "str" },
+    { id: 2, username: "str2" },
+  ],
+};
+
+interface IPostEvenBetter1<T extends IAuthor | ICategory> {
+  id: number;
+  title: string;
+  desc: string;
+  extra: T[];
+}
+
 interface IPostEvenBetter<T extends object> {
   id: number;
   title: string;
@@ -237,7 +265,7 @@ interface IPostEvenBetter<T extends object> {
   extra: T[];
 }
 
-const testMe2: IPostEvenBetter<{ id:number }> = {
+const testMe2: IPostEvenBetter<{ id: number }> = {
   id: 1,
   title: "post title",
   desc: "post desc",
